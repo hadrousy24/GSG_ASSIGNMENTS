@@ -4,7 +4,7 @@ interface Iprops {
 
 const CoursesList = (props: Iprops) => {
     return (
-        <ul>
+        <ul className="courses-list">
             {props.courses.map((course, index) => <li key={course + index}>{course}</li>)}
         </ul>
     )

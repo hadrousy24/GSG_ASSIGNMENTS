@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './add-form.css'
 import { IStudent } from '../../types';
 import CoursesListForm from '../courses-list-form/courses-list-form.component';
+import { validateStudent } from '../../utils/validation';
 
 interface IProps {
     className?: string;
@@ -12,6 +13,7 @@ const INITIAL_STUDENT = {
     id: "",
     name: "",
     age: 0,
+    absents: 0,
     isGraduated: false,
     courses: []
 }
@@ -19,6 +21,7 @@ const INITIAL_STUDENT = {
 const AddForm = (props: IProps) => {
     const [student, setStudent] = useState<IStudent>(INITIAL_STUDENT);
     const [isOpen, setIsOpen] = useState<Boolean>(false);
+    const [errorsList, setErrorsList] = useState<string[]>([]);
 
     const handleChange = (field: string, value: any) => {
         setStudent({ ...student, [field]: value })
@@ -30,8 +33,15 @@ const AddForm = (props: IProps) => {
 
     const handleSubmit = () => {
         const newStudent: IStudent = { ...student, id: Date.now().toString() }
-        props.onSubmit(newStudent);
-        handleClear();
+
+        const errors = validateStudent(newStudent);
+        if (errors.length > 0) {
+            setErrorsList(errors);
+        } else {
+            setErrorsList([]);
+            props.onSubmit(newStudent);
+            handleClear();
+        }
     }
 
     const handleCoursesChange = (changedCoursesList: string[]) => {
@@ -77,10 +87,24 @@ const AddForm = (props: IProps) => {
                     onSubmit={handleCoursesChange}
                 />
             </div>
-            <div className='actions'>
-                <button onClick={handleSubmit}>Submit</button>
+            <div className='Actions'>
+                <button
+                    onClick={handleSubmit}
+                    style={{ color: errorsList.length ? 'red' : 'initial' }}>
+                    Submit
+                </button>
                 <button onClick={handleClear}>Clear</button>
             </div>
+            {
+                Boolean(errorsList.length) && (
+                    <div className="report">
+                        <h4>You have the following errors:</h4>
+                        {
+                            errorsList.map(error => <p key={error}>- {error}</p>)
+                        }
+                    </div>
+                )
+            }
         </div >
     )
 };
