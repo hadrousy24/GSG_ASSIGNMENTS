@@ -1,18 +1,26 @@
-import React from 'react'
+import "./Dashboard.css"
+import { ITodoItem } from "../types";
 
-const Dashboard = () => {
+interface IProps {
+    items: ITodoItem[];
+}
+
+const Dashboard = (props: IProps) => {
+    const urgentCount = props.items.filter(item => item.isUrgent).length;
+    const completedCount = props.items.filter(item => item.isDone).length;
+
     return (
-        <div>
+        <div className='dashboard-wrapper'>
             <div>
-                <b>20</b>
+                <b>{props.items.length}</b>
                 <span>Created Tasks</span>
             </div>
             <div>
-                <b>20</b>
+                <b>{urgentCount}</b>
                 <span>Urgent Tasks</span>
             </div>
             <div>
-                <b>20</b>
+                <b>{completedCount}</b>
                 <span>Completed Tasks</span>
             </div>
 
