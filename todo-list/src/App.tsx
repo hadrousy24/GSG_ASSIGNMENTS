@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import './App.css'
 import Dashboard from './components/Dashboard/Dashboard'
 import Form from './components/Form/Form'
@@ -7,10 +7,17 @@ import { ITodoItem } from './components/types'
 
 function App() {
   const [todos, setTodos] = useState<ITodoItem[]>([]);
+  const [clock, setClock] = useState('');
 
-  const handleNewItem = (newTask: ITodoItem) => {
+  useEffect(() => {
+    setInterval(() => {
+      setClock(new Date().toTimeString());
+    }, 1000)
+  }, []);
+
+  const handleNewItem = useCallback((newTask: ITodoItem) => {
     setTodos([...todos, newTask]);
-  }
+  }, [todos])
 
   const handleTaskToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const itemId = e.target.dataset.itemId;
@@ -25,7 +32,7 @@ function App() {
 
   return (
     <div>
-      <h1>Todo App - {new Date().toDateString()}</h1>
+      <h1>Todo App - {clock}</h1>
       <Form onSubmit={handleNewItem} />
       <Dashboard items={todos} />
       <TodoList items={todos} onToggle={handleTaskToggle} onDelete={handleTaskDelete} />

@@ -1,13 +1,19 @@
 import "./Dashboard.css"
 import { ITodoItem } from "../types";
+import { useMemo } from "react";
 
 interface IProps {
     items: ITodoItem[];
 }
 
 const Dashboard = (props: IProps) => {
-    const urgentCount = props.items.filter(item => item.isUrgent).length;
-    const completedCount = props.items.filter(item => item.isDone).length;
+    const urgentCount = useMemo(() => {
+        return props.items.filter(item => item.isUrgent).length;
+    }, [props.items]);
+
+    const completedCount = useMemo(() => {
+        return props.items.filter(item => item.isDone).length;
+    }, [props.items]);
 
     return (
         <div className='dashboard-wrapper'>
