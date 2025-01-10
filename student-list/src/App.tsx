@@ -10,13 +10,14 @@ function App() {
   const [studentsList, setStudentsList] = useState<IStudent[]>([]);
   const [totalAbsents, setTotalAbsents] = useState(0);
   const lastStdRef = useRef<HTMLDivElement>(null);
+  const [currentPage, setCurrentPage] = useState<string>('main');
 
   const { storedData } = useLocalStorage(studentsList, 'students-list');
 
   useEffect(() => {
     const stdList: IStudent[] = storedData || [];
     const totalAbs = stdList.reduce((prev, curr) => { return prev + curr.absents }, 0);
-    setStudentsList(storedData);
+    setStudentsList(stdList);
     setTotalAbsents(totalAbs);
   }, [storedData]);
 
@@ -44,9 +45,13 @@ function App() {
   const h1Style = { color: '#69247C', fontSize: '24px' };
 
   return (
-    <>
+    <div>
       <div className='main wrapper'>
         <h1 style={h1Style}>Welcome to GSG React/Next Course</h1>
+        <nav>
+          <button onClick={() => { setCurrentPage('main') }}>Home</button>
+          <button onClick={() => { setCurrentPage('about') }}>About us</button>
+        </nav>
         <AddForm className="addForm" onSubmit={handleAddStudent} />
         <div className="stats">
           <button onClick={removeFirst}>POP Student</button>
@@ -69,7 +74,7 @@ function App() {
         }
       </div>
       <div ref={lastStdRef}></div>
-    </>
+    </div>
   )
 }
 
