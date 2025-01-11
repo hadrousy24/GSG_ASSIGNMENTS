@@ -1,11 +1,12 @@
 import { ITodoItem } from "../types";
+import React from "react";
 import "./form.css"
 
 interface IProps {
     onSubmit: (newTask: ITodoItem) => void;
 }
 
-const Form = (props: IProps) => {
+const Form = React.memo((props: IProps) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const title: string = e.currentTarget["task"].value;
@@ -33,6 +34,6 @@ const Form = (props: IProps) => {
             <input className="submit" type="submit" value="Add Todo" />
         </form>
     )
-}
+});
 
 export default Form;
