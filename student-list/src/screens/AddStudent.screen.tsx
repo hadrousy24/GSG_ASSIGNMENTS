@@ -2,7 +2,7 @@ import AddForm from "../components/add-form/add-form.component";
 import { IStudent } from "../types";
 
 interface IProps {
-    onAdd: (newStd: IStudent) => void;
+    onAdd: (newStd: IStudent) => void
 }
 
 const AddStudent = (props: IProps) => {
