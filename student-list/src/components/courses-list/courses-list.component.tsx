@@ -1,11 +1,13 @@
-interface Iprops {
-    courses: string[];
+interface IProps {
+    list: string[];
 }
 
-const CoursesList = (props: Iprops) => {
+const CoursesList = (props: IProps) => {
     return (
         <ul className="courses-list">
-            {props.courses.map((course, index) => <li key={course + index}>{course}</li>)}
+            {
+                props.list.map((item, index) => <li key={index + item}>{item}</li>)
+            }
         </ul>
     )
 }

@@ -21,10 +21,11 @@ body {
   margin-top: 0;
 }
 
-.main>.stats {
+.main>.stats,
+.main>.filter {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .main.wrapper {
@@ -33,9 +34,9 @@ body {
 
 nav {
   margin: 20px 0;
+  border-top: 2px solid #DA498D;
+  border-bottom: 2px solid #DA498D;
   padding: 5px 0;
   display: flex;
   column-gap: 10px;
-  border-top: 2px solid #DA498D;
-  border-bottom: 2px solid #DA498D;
 }

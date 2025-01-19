@@ -4,5 +4,5 @@ export interface IStudent {
     age: number;
     absents: number;
     isGraduated: boolean;
-    courses: string[];
+    coursesList: string[];
 }
