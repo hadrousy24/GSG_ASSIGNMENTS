@@ -26,16 +26,38 @@ const Main = (props: IProps) => {
 
     useEffect(() => {
         const query = params.get('q') || '';
+        const graduated = params.get('graduated');
         if (query) {
             setFilteredList(studentsList.filter(std => std.name.toLowerCase().includes(query.toLowerCase())));
         } else {
             setFilteredList(studentsList);
         }
+
+        if (graduated === 'grad') {
+            setFilteredList(oldState => oldState.filter(std => std.isGraduated));
+        } else if (graduated === 'non-grad') {
+            setFilteredList(oldState => oldState.filter(std => !std.isGraduated));
+        }
+
     }, [params, studentsList]);
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         const query = event.target.value;
-        params.set('q', query);
+        if (query.length) {
+            params.set('q', query);
+        } else {
+            params.delete('q');
+        }
+        setParams(params);
+    }
+
+    const handleGradFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const v = event.target.value;
+        if (v === 'all') {
+            params.delete('graduated')
+        } else {
+            params.set('graduated', v);
+        }
         setParams(params);
     }
 
@@ -49,6 +71,11 @@ const Main = (props: IProps) => {
             </div>
             <div className='filter'>
                 <input type="text" placeholder="Search" onChange={handleSearch} value={params.get('q') || ''} />
+                <select value={params.get('graduated') || 'all'} onChange={handleGradFilter}>
+                    <option value="all">All</option>
+                    <option value="grad">Graduated</option>
+                    <option value="non-grad">Ungraduated</option>
+                </select>
             </div>
             {
                 filteredList.length
