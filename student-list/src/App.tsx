@@ -2,21 +2,20 @@ import './App.css'
 import Main from './screens/Main.screen';
 import About from './screens/About.screen';
 import NotFound from './screens/NotFound.screen';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes} from 'react-router-dom';
 import StudentDetails from './screens/StudentDetails.screen';
 import { useState, useEffect } from 'react';
 import useLocalStorage from "./hooks/useLocalStorage.hook";
 import { IStudent } from './types';
 import AddStudent from './screens/AddStudent.screen';
-import { AuthProvider } from './providers/authProvider';
 import Login from './screens/Login.screen';
+import NavBar from './components/nav-bar/nav-bar.component';
 
 function App() {
   const h1Style = { color: '#69247C', fontSize: '24px' };
-
+  
   const [studentsList, setStudentsList] = useState<IStudent[]>([]);
   const [totalAbsents, setTotalAbsents] = useState(0);
-  const location = useLocation();
 
   const { storedData } = useLocalStorage(studentsList, 'students-list');
 
@@ -43,14 +42,9 @@ function App() {
   }
 
   return (
-    <AuthProvider>
       <div className="main wrapper">
         <h1 style={h1Style}>Welcome to GSG React/Next Course</h1>
-        <nav>
-          <Link className={location.pathname === "/" ? 'active' : ''} to='/'>Home Page</Link>
-          <Link className={location.pathname === "/add" ? 'active' : ''} to='/add'>Add Student</Link>
-          <Link className={location.pathname === "/about" ? 'active' : ''} to='/about'>About App</Link>
-        </nav>
+        <NavBar />
         <Routes>
           <Route path='/' element={
             <Main
@@ -67,7 +61,6 @@ function App() {
           <Route path='*' element={<NotFound />} />
         </Routes>
       </div>
-    </AuthProvider>
   )
 }
 
