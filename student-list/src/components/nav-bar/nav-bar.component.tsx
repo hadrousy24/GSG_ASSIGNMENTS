@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../providers/authProvider';
 import { useContext } from 'react';
 import "./nav-bar.css"
+import { Role } from '../../types';
 
 const NavBar = () => {
   const location = useLocation();
@@ -16,7 +17,7 @@ const NavBar = () => {
     <nav>
       <span>
         <Link className={location.pathname === "/" ? 'active' : ''} to='/'>Home Page</Link>
-        <Link className={location.pathname === "/add" ? 'active' : ''} to='/add'>Add Student</Link>
+        {user?.role === Role.ADMIN && <Link className={location.pathname === "/add" ? 'active' : ''} to='/add'>Add Student</Link>}
         <Link className={location.pathname === "/about" ? 'active' : ''} to='/about'>About App</Link>
       </span>
       <span>

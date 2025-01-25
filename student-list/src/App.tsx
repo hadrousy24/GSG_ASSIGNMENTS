@@ -6,7 +6,7 @@ import { Route, Routes} from 'react-router-dom';
 import StudentDetails from './screens/StudentDetails.screen';
 import { useState, useEffect } from 'react';
 import useLocalStorage from "./hooks/useLocalStorage.hook";
-import { IStudent } from './types';
+import { IStudent, Role } from './types';
 import AddStudent from './screens/AddStudent.screen';
 import Login from './screens/Login.screen';
 import NavBar from './components/nav-bar/nav-bar.component';
@@ -48,16 +48,18 @@ function App() {
         <NavBar />
         <Routes>
           <Route path='/' element={
-            <Main
+            <Guarded roles={[Role.ADMIN, Role.GUEST, Role.TEACHER]}>
+              <Main
               studentsList={studentsList}
               totalAbsents={totalAbsents}
               onAbsent={handleAbsentChange}
               onRemove={removeFirst}
-            />
+              />
+            </Guarded>
           } />
-          <Route path='/add' element={<Guarded><AddStudent onAdd={handleAddStudent} /></Guarded>} />
+          <Route path='/add' element={<Guarded roles={[Role.ADMIN]}><AddStudent onAdd={handleAddStudent} /></Guarded>} />
           <Route path='/about' element={<About />} />
-          <Route path='/student/:id' element={<Guarded><StudentDetails /></Guarded>} />
+          <Route path='/student/:id' element={<Guarded roles={[Role.ADMIN, Role.TEACHER]}><StudentDetails /></Guarded>} />
           <Route path='/login' element={<Login />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
